@@ -8,7 +8,31 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
+    <Grid Margin="0,120,0.6,40.2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
+        <ListView x:Name="mylist" ItemsSource="{x:Bind MusicList}"  IsItemClickEnabled="True" ItemClick="Mylist_ItemClick" >
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Tapped="StackPanel_Tapped"  Background="Transparent" Width="800">
+                        <StackPanel Orientation="Horizontal" Background="Bisque" >
+                            <TextBlock Text="{Binding Title}" Height="30" Foreground="Black"/>
+                        </StackPanel>
+                        <!--                       <StackPanel Orientation="Horizontal" Background="Beige">
+                            <TextBlock Text="{Binding Artist}" Height="30" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Background="Bisque">
+                            <TextBlock Text="{Binding Album}" Height="30" />
+                        </StackPanel>
+                                               <StackPanel Orientation="Horizontal">
+                            <Image Source="{Binding AlbumCover}"/>
+                        </StackPanel>-->
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <MediaPlayerElement x:Name="mediaPlayer" AutoPlay="True" RequestedTheme="Dark" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stretch="Uniform" Height="auto" Width="auto"/>
+        <!--        <MediaPlayerElement x:Name="mediaPlayer" Source="{Binding MusicPath}" RequestedTheme="Dark" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stretch="Uniform" Height="auto" Width="auto"/>-->
+        <Button x:Name="btnPickSong" Content="Pick a Song" Click="PickSong_Click" HorizontalAlignment="Left" Margin="143,447,0,0" VerticalAlignment="Top" Height="35" Width="172"/>
+        <Button x:Name="btnPlay" Content="Play" Click="Play_Click" HorizontalAlignment="Left" Margin="143,387,0,0" VerticalAlignment="Top" Width="172"/>
 
     </Grid>
 </Page>
