@@ -51,21 +51,68 @@ namespace MusicPlayer
                     Title = title,
                     Artist = artist,
                     Album = album,
-                    Path = file.Path,
-                    //   AlbumCover = albumCover
+                    Path = file.Path
                 });
 
                 MediaPlaybackItem item = new MediaPlaybackItem(MediaSource.CreateFromStorageFile(file));
                 mpl.Items.Add(item);
             }
         }
-       private void StackPanel_Tapped(object sender, TappedRoutedEventArgs e)
+
+        #region NavigationView event handlers
+        private void nvTopLevelNav_Loaded(object sender, RoutedEventArgs e)
+        {
+            // set the initial SelectedItem
+            foreach (NavigationViewItemBase item in nvTopLevelNav.MenuItems)
+            {
+                if (item is NavigationViewItem && item.Tag.ToString() == "Home_Page")
+                {
+                    nvTopLevelNav.SelectedItem = item;
+                    break;
+                }
+            }
+            contentFrame.Navigate(typeof(MusicPlayer.Views.Song));
+        }
+
+        private void nvTopLevelNav_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
         {
         }
-        private void PickSong_Click(object sender, RoutedEventArgs e)
+
+        private void nvTopLevelNav_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
         {
-            this.Frame.Navigate(typeof(Player));
+
+            if (args.IsSettingsInvoked)
+            {
+            //    contentFrame.Navigate(typeof(Settings));
+            }
+            else
+            {
+                TextBlock ItemContent = args.InvokedItem as TextBlock;
+                if (ItemContent != null)
+                {
+                    switch (ItemContent.Tag)
+                    {
+                        case "Nav_Song":
+                            contentFrame.Navigate(typeof(MusicPlayer.Views.Song));
+                            break;
+
+                        case "Nav_Album":
+                            contentFrame.Navigate(typeof(MusicPlayer.Views.Album));
+                            break;
+
+                        case "Nav_Artist":
+                            contentFrame.Navigate(typeof(MusicPlayer.Views.Artist));
+                            break;
+
+                        case "Nav_Playlist":
+                            contentFrame.Navigate(typeof(MusicPlayer.Views.Playlist));
+                            break;
+
+                    }
+                }
+            }
         }
+        #endregion
 
         private async void Mylist_ItemClick(object sender, ItemClickEventArgs e)
         {
@@ -79,7 +126,7 @@ namespace MusicPlayer
             SetMediaPlayerControl();
 
             //set media player source
-            mediaPlayer.Source = MediaSource.CreateFromStream(readStream, file.ContentType);
+       //     mediaPlayer.Source = MediaSource.CreateFromStream(readStream, file.ContentType);
             mediaPlayer.AutoPlay = true;
 
         }
@@ -118,5 +165,6 @@ namespace MusicPlayer
 
             mediaPlayer.TransportControls.IsRightTapEnabled = true;
         }
-     }
+
+    }
 }

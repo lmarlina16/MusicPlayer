@@ -5,34 +5,62 @@
     xmlns:local="using:MusicPlayer"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    mc:Ignorable="d">
+    <!--    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"> -->
+    <Page.Background>
+        <SolidColorBrush Color="{ThemeResource SystemAltHighColor}"/>
+    </Page.Background>
 
-    <Grid Margin="0,120,0.6,40.2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
-        <ListView x:Name="mylist" ItemsSource="{x:Bind MusicList}"  IsItemClickEnabled="True" ItemClick="Mylist_ItemClick" >
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Tapped="StackPanel_Tapped"  Background="Transparent" Width="800">
-                        <StackPanel Orientation="Horizontal" Background="Bisque" >
-                            <TextBlock Text="{Binding Title}" Height="30" Foreground="Black"/>
-                        </StackPanel>
-                        <!--                       <StackPanel Orientation="Horizontal" Background="Beige">
-                            <TextBlock Text="{Binding Artist}" Height="30" />
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal" Background="Bisque">
-                            <TextBlock Text="{Binding Album}" Height="30" />
-                        </StackPanel>
-                                               <StackPanel Orientation="Horizontal">
-                            <Image Source="{Binding AlbumCover}"/>
-                        </StackPanel>-->
-                    </StackPanel>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-        <MediaPlayerElement x:Name="mediaPlayer" AutoPlay="True" RequestedTheme="Dark" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stretch="Uniform" Height="auto" Width="auto"/>
-        <!--        <MediaPlayerElement x:Name="mediaPlayer" Source="{Binding MusicPath}" RequestedTheme="Dark" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stretch="Uniform" Height="auto" Width="auto"/>-->
-        <Button x:Name="btnPickSong" Content="Pick a Song" Click="PickSong_Click" HorizontalAlignment="Left" Margin="143,447,0,0" VerticalAlignment="Top" Height="35" Width="172"/>
-        <Button x:Name="btnPlay" Content="Play" Click="Play_Click" HorizontalAlignment="Left" Margin="143,387,0,0" VerticalAlignment="Top" Width="172"/>
+    <Grid Margin="0,12,0,12">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="600"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <NavigationView x:Name="nvTopLevelNav"
+                Loaded="nvTopLevelNav_Loaded"
+                Margin="0,12,0,0"
+                SelectionChanged="nvTopLevelNav_SelectionChanged"
+                ItemInvoked="nvTopLevelNav_ItemInvoked"
+                IsTabStop="False" >
+            <NavigationView.MenuItems>
+                <NavigationViewItem Tag="Album_Page" >
+                    <TextBlock Tag="Nav_Album">Albums</TextBlock>
+                </NavigationViewItem>
+                <NavigationViewItem Tag="Artist_Page">
+                    <TextBlock Tag="Nav_Artist">Artists</TextBlock>
+                </NavigationViewItem>
+                <NavigationViewItem Tag="Playlist_Page" >
+                    <TextBlock Tag="Nav_Playlist">Playlist</TextBlock>
+                </NavigationViewItem>
+                <NavigationViewItem Tag="Song_Page" >
+                    <TextBlock Tag="Nav_Song">Songs</TextBlock>
+                </NavigationViewItem>
+            </NavigationView.MenuItems>
+            <Frame x:Name="contentFrame"></Frame>
+        </NavigationView>
+        <StackPanel x:Name="spMediaPlayer" Grid.Row="1" Height="100">
+            <MediaPlayerElement x:Name="mediaPlayer" x:FieldModifier="public" AreTransportControlsEnabled="True">
+                <MediaPlayerElement.TransportControls>
+                    <MediaTransportControls 
+                        IsStopButtonVisible="True" 
+                        IsStopEnabled="True" 
+                        IsPlaybackRateButtonVisible="True" 
+                        IsPlaybackRateEnabled="True" 
+                        IsSkipForwardButtonVisible="True"
+                        IsSkipForwardEnabled="True"
+                        IsSkipBackwardButtonVisible="True"
+                        IsSkipBackwardEnabled="True"
+                        IsFastForwardButtonVisible="True" 
+                        IsFastForwardEnabled="True" 
+                        IsFastRewindButtonVisible="True" 
+                        IsFastRewindEnabled="True" HorizontalAlignment="Stretch"/>
+                </MediaPlayerElement.TransportControls>
+            </MediaPlayerElement>
+        </StackPanel>
 
     </Grid>
 </Page>
