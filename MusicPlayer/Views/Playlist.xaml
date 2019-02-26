@@ -26,10 +26,6 @@
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="musicplayer:MusicLibrary">
                         <Grid Margin="0,12,0,12" AutomationProperties.Name="{x:Bind Title}">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" MinWidth="150"/>
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
                             <StackPanel Margin="12,0,0,0" Grid.Column="1" >
                                 <TextBlock Text="{x:Bind Title}" FontFamily="Segoe UI" FontSize="14" FontWeight="SemiBold" Style="{ThemeResource BaseTextBlockStyle}" HorizontalAlignment="Left" Margin="0,0,0,6" LineHeight="20"/>
                             </StackPanel>

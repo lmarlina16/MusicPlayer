@@ -26,11 +26,7 @@
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="musicplayer:MusicLibrary">
                         <Grid Margin="0,12,0,12" AutomationProperties.Name="{x:Bind Title}">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" MinWidth="150"/>
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-                         <!--   <Image x:Name="ItemImage"
+                        <!--    <Image x:Name="ItemImage"
                                     Source="{Binding AlbumCover}"
                                     Stretch="Uniform"
                                     MaxHeight="50" /> -->
@@ -43,23 +39,5 @@
 
             </ListView>
         </StackPanel>
-<!--        <StackPanel Grid.Row="1">
-            <MediaPlayerElement x:Name="mediaPlayer" AutoPlay="True" AreTransportControlsEnabled="True">
-                <MediaPlayerElement.TransportControls>
-                    <MediaTransportControls 
-                        IsStopButtonVisible="True" 
-                        IsStopEnabled="True" 
-                        IsPlaybackRateButtonVisible="True" 
-                        IsPlaybackRateEnabled="True" 
-                        IsFastForwardButtonVisible="True" 
-                        IsFastForwardEnabled="True" 
-                        IsFastRewindButtonVisible="True" 
-                        IsFastRewindEnabled="True" HorizontalAlignment="Stretch"/>
-                </MediaPlayerElement.TransportControls>
-            </MediaPlayerElement>
-                       <Button x:Name="btnPickSong" Content="Pick a Song" Click="PickSong_Click" HorizontalAlignment="Left" Margin="143,447,0,0" VerticalAlignment="Top" Height="35" Width="172"/>
-            <Button x:Name="btnPlay" Content="Play" Click="Play_Click" HorizontalAlignment="Left" Margin="143,387,0,0" VerticalAlignment="Top" Width="172"/> 
-        </StackPanel>-->
-
     </Grid>
 </Page>
