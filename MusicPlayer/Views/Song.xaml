@@ -31,7 +31,7 @@
                                     Stretch="Uniform"
                                     MaxHeight="50" /> -->
                             <StackPanel Margin="12,0,0,0" Grid.Column="1" >
-                                <TextBlock Text="{x:Bind Title}" FontFamily="Segoe UI" FontSize="14" FontWeight="SemiBold" Style="{ThemeResource BaseTextBlockStyle}" HorizontalAlignment="Left" Margin="0,0,0,6" LineHeight="20"/>
+                                <TextBlock Text="{x:Bind Title}" />
                             </StackPanel>
                         </Grid>
                     </DataTemplate>

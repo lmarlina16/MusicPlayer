@@ -34,7 +34,7 @@
                     <TextBlock Tag="Nav_Artist">Artists</TextBlock>
                 </NavigationViewItem>
                 <NavigationViewItem Tag="Playlist_Page" >
-                    <TextBlock Tag="Nav_Playlist">Playlist</TextBlock>
+                    <TextBlock Tag="Nav_Playlist">Playlists</TextBlock>
                 </NavigationViewItem>
                 <NavigationViewItem Tag="Song_Page" >
                     <TextBlock Tag="Nav_Song">Songs</TextBlock>
