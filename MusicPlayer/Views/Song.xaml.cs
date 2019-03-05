@@ -9,6 +9,8 @@ using Windows.Storage.FileProperties;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.Media.Playback;
 using Windows.UI.Xaml;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace MusicPlayer.Views
 {
@@ -23,8 +25,7 @@ namespace MusicPlayer.Views
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
-            StorageFolder musicLib = KnownFolders.MusicLibrary;
-            var files = await musicLib.GetFilesAsync();
+            var files = await MusicLibrary.GetSongFiles();
 
             ObservableCollection<MusicLibrary> MusicList = new ObservableCollection<MusicLibrary>();
 
@@ -40,20 +41,26 @@ namespace MusicPlayer.Views
                 var album = musicProperties.Album;
 
                 //build songs list
-                MusicList.Add(new MusicLibrary
+                MusicLibrary newSong = new MusicLibrary
                 {
                     Filename = file.Name,
                     Title = title,
                     Artist = artist,
                     Album = album,
                     Path = file.Path
-                });
+                };
+
+                if (!MusicList.Contains(newSong))
+                {
+                    MusicList.Add(newSong);
+                };
 
                 MediaPlaybackItem item = new MediaPlaybackItem(MediaSource.CreateFromStorageFile(file));
                 mpl.Items.Add(item);
             }
-            myList.ItemsSource = MusicList;
- //           SetMediaPlayerControl();
+
+            IEnumerable<MusicLibrary> sortedAlbum = MusicList.OrderBy(o => o.Title);
+            myList.ItemsSource = sortedAlbum;
             ((Window.Current.Content as Frame).Content as MainPage).mediaPlayer.Source = mpl;
             ((Window.Current.Content as Frame).Content as MainPage).mediaPlayer.AutoPlay = false;
            
@@ -66,42 +73,9 @@ namespace MusicPlayer.Views
             //code to play song from song.MusicPath
             IRandomAccessStream readStream = await file.OpenAsync(FileAccessMode.Read);
 
-            //set media player controls
-           // SetMediaPlayerControl();
-
             //set media player source
             ((Window.Current.Content as Frame).Content as MainPage).mediaPlayer.Source = MediaSource.CreateFromStream(readStream, file.ContentType);
             ((Window.Current.Content as Frame).Content as MainPage).mediaPlayer.AutoPlay = true;
         }
-        private void SetMediaPlayerControl()
-        {
-            //mediaPlayer.AreTransportControlsEnabled = true;
-            
-            //mediaPlayer.TransportControls.IsFastForwardButtonVisible = true;
-            //mediaPlayer.TransportControls.IsFastForwardEnabled = true;
-
-            //mediaPlayer.TransportControls.IsFastRewindButtonVisible = true;
-            //mediaPlayer.TransportControls.IsFastRewindEnabled = true;
-
-            //mediaPlayer.TransportControls.IsNextTrackButtonVisible = true;
-            //mediaPlayer.TransportControls.IsPreviousTrackButtonVisible = true;
-
-            //mediaPlayer.TransportControls.IsPlaybackRateButtonVisible = true;
-            //mediaPlayer.TransportControls.IsPlaybackRateEnabled = true;
-
-            //mediaPlayer.TransportControls.IsSkipForwardButtonVisible = true;
-            //mediaPlayer.TransportControls.IsSkipForwardEnabled = true;
-
-            //mediaPlayer.TransportControls.IsSkipBackwardButtonVisible = true;
-            //mediaPlayer.TransportControls.IsSkipBackwardEnabled = true;
-
-            //mediaPlayer.TransportControls.IsStopButtonVisible = true;
-            //mediaPlayer.TransportControls.IsStopEnabled = true;
-
-            //mediaPlayer.TransportControls.IsRightTapEnabled = true;
-        }
-
-
-
     }
 }

@@ -73,8 +73,16 @@ namespace MusicPlayer.Views
             ((Window.Current.Content as Frame).Content as MainPage).mediaPlayer.AutoPlay = true;
         }
 
-        private void LvPlaylist_ItemClick(object sender, ItemClickEventArgs e)
+        private async void LvPlaylist_ItemClick(object sender, ItemClickEventArgs e)
         {
+            //Get Selected Item
+            MusicLibrary song = (MusicLibrary)e.ClickedItem;
+            StorageFile file = await StorageFile.GetFileFromPathAsync(song.Path);
+            //code to play song from song.MusicPath
+            IRandomAccessStream readStream = await file.OpenAsync(FileAccessMode.Read);
+
+            ((Window.Current.Content as Frame).Content as MainPage).mediaPlayer.Source = MediaSource.CreateFromStream(readStream, file.ContentType); ;
+            ((Window.Current.Content as Frame).Content as MainPage).mediaPlayer.AutoPlay = true;
 
         }
     }

@@ -14,7 +14,7 @@
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition></RowDefinition>
+            <RowDefinition Height="600"></RowDefinition>
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0">
@@ -27,7 +27,7 @@
                     <DataTemplate x:DataType="musicplayer:MusicLibrary">
                         <Grid Margin="0,12,0,12" AutomationProperties.Name="{x:Bind Title}">
                             <StackPanel Margin="12,0,0,0" Grid.Column="1" >
-                                <TextBlock Text="{x:Bind Title}" FontFamily="Segoe UI" FontSize="14" FontWeight="SemiBold" Style="{ThemeResource BaseTextBlockStyle}" HorizontalAlignment="Left" Margin="0,0,0,6" LineHeight="20"/>
+                                <TextBlock Text="{x:Bind Title}" HorizontalAlignment="Left" Margin="0,0,0,6" LineHeight="20"/>
                             </StackPanel>
                         </Grid>
                     </DataTemplate>

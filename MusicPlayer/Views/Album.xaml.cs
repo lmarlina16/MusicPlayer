@@ -18,17 +18,11 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
-
 namespace MusicPlayer.Views
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
     public sealed partial class Album : Page
     {
 
-        private List<string> AlbumList = new List<string>();
         private List<string> songsByAlbumList = new List<string>();
         private MediaPlaybackList mpl = new MediaPlaybackList();
         private ObservableCollection<MusicLibrary> MusicList = new ObservableCollection<MusicLibrary>();
@@ -41,7 +35,7 @@ namespace MusicPlayer.Views
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             var files = await MusicLibrary.GetSongFiles();
-            AlbumList = await MusicLibrary.GetAlbumList();
+            IEnumerable<MusicLibrary>  AlbumList = await MusicLibrary.GetAlbumList();
             lvAlbums.ItemsSource = AlbumList;
         }
 
@@ -61,10 +55,9 @@ namespace MusicPlayer.Views
 
         private async void LvAlbums_ItemClick(object sender, ItemClickEventArgs e)
         {
-            var album = (string)e.ClickedItem;
-
-            StorageFolder musicLib = KnownFolders.MusicLibrary;
-            var files = await musicLib.GetFilesAsync();
+            var ml = (MusicLibrary)e.ClickedItem;
+            var album = ml.Album;
+            var files = await MusicLibrary.GetSongFiles();
 
             ObservableCollection<MusicLibrary> MusicList = new ObservableCollection<MusicLibrary>();
 
