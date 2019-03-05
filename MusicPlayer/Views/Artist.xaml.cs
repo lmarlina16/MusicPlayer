@@ -33,10 +33,7 @@ namespace MusicPlayer.Views
         private async void LvArtists_ItemClick(object sender, ItemClickEventArgs e)
         {
             var artist = (string)e.ClickedItem;
-
-            StorageFolder musicLib = KnownFolders.MusicLibrary;
-            var files = await musicLib.GetFilesAsync();
-
+            var files = await MusicLibrary.GetSongFiles();
             ObservableCollection<MusicLibrary> MusicList = new ObservableCollection<MusicLibrary>();
     
             foreach (var file in files)

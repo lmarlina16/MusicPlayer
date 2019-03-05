@@ -28,37 +28,6 @@ namespace MusicPlayer
             this.InitializeComponent();
         }
 
-        protected override async void OnNavigatedTo(NavigationEventArgs e)
-        {
-            StorageFolder musicLib = KnownFolders.MusicLibrary;
-            var files = await musicLib.GetFilesAsync();
-
-            foreach (var file in files)
-            {
-                //get file/song property
-                StorageItemThumbnail currentThumb = await file.GetThumbnailAsync(ThumbnailMode.MusicView, 200, ThumbnailOptions.UseCurrentScale);
-                var albumCover = new BitmapImage();
-                albumCover.SetSource(currentThumb);
-                var musicProperties = await file.Properties.GetMusicPropertiesAsync();
-                var title = musicProperties.Title;
-                var artist = musicProperties.Artist;
-                var album = musicProperties.Album;
-
-                //build songs list
-                MusicList.Add(new MusicLibrary
-                {
-                    Filename = file.Name,
-                    Title = title,
-                    Artist = artist,
-                    Album = album,
-                    Path = file.Path
-                });
-
-                MediaPlaybackItem item = new MediaPlaybackItem(MediaSource.CreateFromStorageFile(file));
-                mpl.Items.Add(item);
-            }
-        }
-
         #region NavigationView event handlers
         private void nvTopLevelNav_Loaded(object sender, RoutedEventArgs e)
         {
@@ -123,48 +92,14 @@ namespace MusicPlayer
             IRandomAccessStream readStream = await file.OpenAsync(FileAccessMode.Read);
 
             //set media player controls
-            SetMediaPlayerControl();
-
-            //set media player source
-       //     mediaPlayer.Source = MediaSource.CreateFromStream(readStream, file.ContentType);
             mediaPlayer.AutoPlay = true;
 
         }
 
         private void Play_Click(object sender, RoutedEventArgs e)
         {
-            this.SetMediaPlayerControl();
             mediaPlayer.Source = mpl;
             mediaPlayer.MediaPlayer.Play();
-
         }
-        private void SetMediaPlayerControl()
-        {
-            mediaPlayer.AreTransportControlsEnabled = true;
-
-            mediaPlayer.TransportControls.IsFastForwardButtonVisible = true;
-            mediaPlayer.TransportControls.IsFastForwardEnabled = true;
-
-            mediaPlayer.TransportControls.IsFastRewindButtonVisible = true;
-            mediaPlayer.TransportControls.IsFastRewindEnabled = true;
-
-            mediaPlayer.TransportControls.IsNextTrackButtonVisible = true;
-            mediaPlayer.TransportControls.IsPreviousTrackButtonVisible = true;
-
-            mediaPlayer.TransportControls.IsPlaybackRateButtonVisible = true;
-            mediaPlayer.TransportControls.IsPlaybackRateEnabled = true;
-
-            mediaPlayer.TransportControls.IsSkipForwardButtonVisible = true;
-            mediaPlayer.TransportControls.IsSkipForwardEnabled = true;
-
-            mediaPlayer.TransportControls.IsSkipBackwardButtonVisible = true;
-            mediaPlayer.TransportControls.IsSkipBackwardEnabled = true;
-
-            mediaPlayer.TransportControls.IsStopButtonVisible = true;
-            mediaPlayer.TransportControls.IsStopEnabled = true;
-
-            mediaPlayer.TransportControls.IsRightTapEnabled = true;
-        }
-
     }
 }

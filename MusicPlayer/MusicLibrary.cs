@@ -2,13 +2,9 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Windows.Media.Core;
-using Windows.Media.Playback;
 using Windows.Storage;
 using Windows.Storage.FileProperties;
-using Windows.Storage.Pickers;
 using Windows.Storage.Search;
 using Windows.UI.Xaml.Media.Imaging;
 
@@ -21,13 +17,7 @@ namespace MusicPlayer
         public string Artist { get; set; }
         public string Album { get; set; }
         public string Path { get; set; }
-
-        public async static Task<IReadOnlyList<StorageFile>>  GetSongFiles()
-        {
-            StorageFolder musicLib = KnownFolders.MusicLibrary;
-            var files = await musicLib.GetFilesAsync();
-            return  files; 
-        }
+        public BitmapImage AlbumCover { get; set; }
 
         public async static Task<List<string>> GetArtistList()
         {
@@ -47,13 +37,18 @@ namespace MusicPlayer
             ArtistList.Sort();
             return ArtistList;
         }
-        public async static Task<List<string>> GetAlbumList()
+        public async static Task<IEnumerable<MusicLibrary>> GetAlbumList()
         {
             List<string> AlbumList = new List<string>();
+
+            ObservableCollection<MusicLibrary> MusicList = new ObservableCollection<MusicLibrary>();
 
             var files = await GetSongFiles();
             foreach (var file in files)
             {
+                StorageItemThumbnail currentThumb = await file.GetThumbnailAsync(ThumbnailMode.MusicView, 200, ThumbnailOptions.UseCurrentScale);
+                var albumCover = new BitmapImage();
+                albumCover.SetSource(currentThumb);
                 //get file/song property
                 var musicProperties = await file.Properties.GetMusicPropertiesAsync();
                 var album = musicProperties.Album;
@@ -61,18 +56,27 @@ namespace MusicPlayer
                     album = "Unknown";
 
                 if (!AlbumList.Contains(album))
+                {
                     AlbumList.Add(album);
+                    MusicLibrary ml = new MusicLibrary()
+                    {
+                        Album = album,
+                        AlbumCover = albumCover
+                    };
+                    MusicList.Add(ml);
+                }
             }
-            AlbumList.Sort();
-            return AlbumList;
+
+            IEnumerable<MusicLibrary> sortedAlbum = MusicList.OrderBy(o => o.Album);
+            return sortedAlbum;
         }
-        public async static void GetPlaylist()
+        public async static Task<IReadOnlyList<StorageFile>> GetSongFiles()
         {
             StorageFolder folder = KnownFolders.MusicLibrary;
             var myMusic = await Windows.Storage.StorageLibrary.GetLibraryAsync(Windows.Storage.KnownLibraryId.Music);
 
             QueryOptions queryOption = new QueryOptions
-                (CommonFileQuery.OrderByTitle, new string[] { ".mp3", ".mp4", ".m4a" });
+                (CommonFileQuery.OrderByTitle, new string[] { ".mp3", ".mp4", ".m4a" }); //".m4p" not supported: itune music file
 
             queryOption.FolderDepth = FolderDepth.Deep;
 
@@ -81,13 +85,8 @@ namespace MusicPlayer
             var files = await KnownFolders.MusicLibrary.CreateFileQueryWithOptions
               (queryOption).GetFilesAsync();
 
-            foreach (var file in files)
-            {
-                // do something with the music files
-                string name = file.Name;
-                string type = file.ContentType;
-            }
+            return files;
         }
 
-     }
+    }
 }
